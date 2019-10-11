@@ -335,7 +335,12 @@ function Panzoom(elem: HTMLElement | SVGElement, options?: PanzoomOptions): Panz
 
   function handleDown(event: PointerEvent) {
     // Don't handle this event if the target is a clickable
-    if (event.target && (event.target as Element).classList.contains(options.clickableClass)) {
+    if (
+      event.target && 
+      ((event.target as Element).classList.contains(options.clickableClass) ||
+      (event.target as Element).closest('[role="button"]') ||
+      (event.target as Element).tagName.toLowerCase() === 'input')
+    ) {
       return
     }
     addPointer(pointers, event)
