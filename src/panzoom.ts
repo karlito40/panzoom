@@ -334,6 +334,11 @@ function Panzoom(elem: HTMLElement | SVGElement, options?: PanzoomOptions): Panz
   const pointers: PointerEvent[] = []
 
   function handleDown(event: PointerEvent) {
+    // Don't handle this event if pan is disable
+    if (options.disablePan) {
+      return
+    }
+
     // Don't handle this event if the target is a clickable
     if (
       event.target && 
