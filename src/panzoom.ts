@@ -334,42 +334,38 @@ function Panzoom(elem: HTMLElement | SVGElement, options?: PanzoomOptions): Panz
   const pointers: PointerEvent[] = []
 
   function handleDown(event: PointerEvent) {
-                                             // Don't handle this event if pan is disable
-                                             if (options.disablePan) {
-                                               return
-                                             }
+    // Don't handle this event if pan is disable
+    if (options.disablePan) {
+      return
+    }
 
-                                             // Don't handle this event if the target is a clickable
-                                             if (
-                                               event.target &&
-                                               ((event.target as Element).classList.contains(
-                                                 options.clickableClass
-                                               ) ||
-                                                 (event.target as Element).closest(
-                                                   '[role="button"]'
-                                                 ) ||
-                                                 (event.target as Element).tagName.toLowerCase() ===
-                                                   'input')
-                                             ) {
-                                               return
-                                             }
-                                             addPointer(pointers, event)
-                                             isPanning = true
-                                             event.preventDefault()
-                                             event.stopPropagation()
-                                             origX = x
-                                             origY = y
+    // Don't handle this event if the target is a clickable
+    if (
+      event.target &&
+      ((event.target as Element).classList.contains(options.clickableClass) ||
+      (event.target as Element).closest(`.${options.clickableClass}`) ||
+      (event.target as Element).closest('[role="button"]') ||
+      (event.target as Element).tagName.toLowerCase() === 'input')
+    ) {
+      return
+    }
+    addPointer(pointers, event)
+    isPanning = true
+    event.preventDefault()
+    event.stopPropagation()
+    origX = x
+    origY = y
 
-                                             trigger('panzoomstart', { x, y, scale }, options)
+    trigger('panzoomstart', { x, y, scale }, options)
 
-                                             // This works whether there are multiple
-                                             // pointers or not
-                                             const point = getMiddle(pointers)
-                                             startClientX = point.clientX
-                                             startClientY = point.clientY
-                                             startScale = scale
-                                             startDistance = getDistance(pointers)
-                                           }
+    // This works whether there are multiple
+    // pointers or not
+    const point = getMiddle(pointers)
+    startClientX = point.clientX
+    startClientY = point.clientY
+    startScale = scale
+    startDistance = getDistance(pointers)
+  }
 
   function move(event: PointerEvent) {
     if (
